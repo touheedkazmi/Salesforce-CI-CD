@@ -1,0 +1,25 @@
+<template>
+     <lightning-card title="Custom Validation in Base Record Edit form" icon-name="standard:account">
+         <div class="slds-m-around_medium">
+             <lightning-record-edit-form 
+             object-api-name={contactObject}
+             onsubmit={handleSubmit}
+             onsuccess={handleSuccess}
+             onerror={handleError}>
+                 <lightning-messages></lightning-messages> <!-- To show form level error messages -->
+                    <lightning-input 
+                    label="Name"
+                    value={inputValue}
+                    onkeyup={handleNameChange}
+                    class="slds-m-bottom_small">
+                </lightning-input>
+                <lightning-button 
+                class="slds-m-top_small"
+                variant="brand"
+                type="submit"
+                label="Create Account">
+                </lightning-button>
+                </lightning-record-edit-form>  
+         </div>
+     </lightning-card>
+</template>

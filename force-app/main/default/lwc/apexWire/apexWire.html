@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="Apex Wire to property Example" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <template if:true={accountList.data}>
+                <template for:each={accountList.data} for:item="account">
+                    <div key={account.Id} class="slds-box slds-box_small slds-m-bottom_small">
+                        <p><strong>Name:</strong> {account.Name}</p>
+                        <p><strong>Type:</strong> {account.Type}</p>
+                        <p><strong>Industry:</strong> {account.Industry}</p>
+                    </div>
+                </template>>
+            </template>
+        </div>
+    </lightning-card>
+
+    <lightning-card title="Apex Wire to function Example" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <template if:true={accountListData}>
+                <template for:each={accountListData} for:item="account">
+                    <div key={account.Id} class="slds-box slds-box_small slds-m-bottom_small">
+                        <p><strong>Name:</strong> {account.Name}</p>
+                        <p><strong>Type:</strong> {account.Type}</p>
+                        <p><strong>Industry:</strong> {account.Industry}</p>
+                    </div>
+                </template>>
+            </template>
+        </div>
+    </lightning-card>
+</template>

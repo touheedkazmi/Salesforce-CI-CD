@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="Apex imperative">
+        <div class="slds-m-around_medium">
+            Apex imperative method call example.
+            <p>Click the button to get the account list</p>
+            <lightning-button label="Get Account List" variant="brand" onclick={handleClick}>
+            </lightning-button>
+            <template if:true={accounts}>
+                <template for:each={accounts} for:item="account">
+                    <div class="slds box slds-box_small" key={account.Id}>
+                        <p>Name - {account.Name}</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,10 @@
+<template>
+    <lightning-card title="Delete Record using LDS" icon-name="standard:contact">
+        <div class="slds-m-around_medium">
+           <form>
+                <lightning-input label="Record Id" value={recordId} onchange={changeHandler} class="slds-m-bottom_small"></lightning-input>
+                <lightning-button label="Delete" variant="brand" onclick={deleteHandler} ></lightning-button>
+           </form>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,12 @@
+<template>
+    <lightning-card title="Sign Up Template">
+        <div class="slds-m-around_medium">
+            <h2 class="slds-text-heading_medium slds-m-bottom_medium">Sign Up</h2>
+            <lightning-input label="Username" class="slds-m-bottom_small"></lightning-input>
+            <lightning-input label="Email" class="slds-m-bottom_small"></lightning-input>
+            <lightning-input label="Password" type="password"></lightning-input>
+            <lightning-button variant="destructive" label="Back" class="slds-m-right_small" onclick={handleClick}></lightning-button>
+            <lightning-button variant="success" label="Sign Up" onclick={submitHandler}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,19 @@
+<template>
+    <lightning-card title="Base Record Edit Form Demo" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <lightning-record-edit-form 
+             object-api-name={contactObject}
+             record-id="003NS00001j3vLtYAI">
+             <lightning-messages></lightning-messages> <!-- To show form level error messages -->
+               <lightning-input-field field-name={fields.accountId}></lightning-input-field>
+               <lightning-input-field field-name={fields.nameField}></lightning-input-field>
+               <lightning-input-field field-name={fields.titleField}></lightning-input-field>
+               <lightning-input-field field-name={fields.phoneField}></lightning-input-field>
+               <label class="slds-p-left_small">Enter your email</label>
+               <lightning-input-field variant = "label-hidden" field-name={fields.emailField}></lightning-input-field>
+                <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleReset}></lightning-button>
+                <lightning-button class="slds-m-top_small slds-m-left_small" variant="brand" type="submit" label="Save"></lightning-button>
+            </lightning-record-edit-form>
+        </div>
+    </lightning-card>
+</template>

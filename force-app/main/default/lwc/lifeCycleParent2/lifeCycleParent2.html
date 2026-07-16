@@ -1,0 +1,12 @@
+<template>
+    <lightning-card title="Life Cycle Parent 2">
+        <div class="slds-m-around_medium">
+            <lightning-button 
+            label="Show Child/ Hide Child"
+            onclick={handleClick} class="slds-m-left_medium"></lightning-button>
+            <template if:true={showChild}>
+            <c-life-cycle-child2></c-life-cycle-child2>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Update Record using LDS" icon-name="standard:contact">
+        <div class="slds-m-around_medium">
+            <lightning-datatable
+                key-field="Id"
+                data={contacts}
+                columns={columns}
+                hide-checkbox-column="true"
+                draft-values={draftValues}
+                onsave={handleSave}>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>

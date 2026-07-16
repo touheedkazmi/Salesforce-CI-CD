@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="User Permission Demo">
+        <template if:true={hasViewAllDataAvailable}>
+            <p class="slds-p-horizontal_small">
+                Hurray!! I have View All Data Permission: {hasViewAllDataAvailable}
+            </p>
+        </template>
+        <template if:false={hasViewAllDataAvailable}>
+            <p class="slds-p-horizontal_small">
+                Oops!! I don't have View All Data Permission: {hasViewAllDataAvailable}
+            </p>
+        </template>
+    </lightning-card>
+    <lightning-card title="Custom Permission Demo">
+        <template if:true={hasMyCustomPermission}>
+            <p class="slds-p-horizontal_small">
+                Hurray!! I have My Custom Permission: {hasMyCustomPermission}
+            </p>
+        </template>
+        <template if:false={hasMyCustomPermission}>
+            <p class="slds-p-horizontal_small">
+                Oops!! I don't have My Custom Permission: {hasMyCustomPermission}
+            </p>
+        </template>
+    </lightning-card>
+</template>

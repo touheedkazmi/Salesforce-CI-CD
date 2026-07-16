@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="User details using wire as function" icon-name="standard:user">
+        <div class="slds-m-around_medium">
+            ,<template if:true={userDetails}>
+                <p><strong>Name: </strong>{userDetails.Name.value}</p>
+                <p><strong>Email: </strong>{userDetails.Email.value}</p>
+                <p><strong>Phone: </strong>{userDetails.Phone.value}</p>
+            </template>
+        </div> 
+    </lightning-card>
+
+    <lightning-card title="User details using wire as property" icon-name="standard:user">
+        <div class="slds-m-around_medium">
+            ,<template if:true={userDetailsProperty.data}>
+                <p><strong>Name: </strong>{userDetailsProperty.data.fields.Name.value}</p>
+                <p><strong>Email: </strong>{userDetailsProperty.data.fields.Email.value}</p>
+                <p><strong>Phone: </strong>{userDetailsProperty.data.fields.Phone.value}</p>
+            </template>
+        </div> 
+    </lightning-card>
+</template>

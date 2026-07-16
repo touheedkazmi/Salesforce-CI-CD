@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="get object info using wire" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <template if:true={accountInfo.data}>
+            defaultRecordTypeId: {accountInfo.data.defaultRecordTypeId}
+            Object APi Name: {accountInfo.data.apiName}
+            </template>
+        </div>
+    </lightning-card>
+
+    <lightning-card title="get objects info using wire" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <template if:true={objectInfos}>
+            <template for:each={objectInfos.results} for:item="obj">
+                <div key={obj.result.apiName} class="slds-m-bottom_small">
+                    <div>Object API Name: {obj.result.apiName}</div>
+                    <div>Default Record Type Id: {obj.result.defaultRecordTypeId}</div>
+                </div>
+                </template>
+                </template>
+        </div>
+    </lightning-card>
+</template>
