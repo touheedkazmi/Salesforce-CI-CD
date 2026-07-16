@@ -1,0 +1,36 @@
+name: Deploy Baseline to UAT
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install -g @salesforce/cli
+          sf version
+
+      - name: Authenticate to UAT
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > auth.txt
+          sf org login sfdx-url \
+            --sfdx-url-file auth.txt \
+            --alias UAT
+
+      - name: Deploy Baseline
+        run: |
+          sf project deploy start \
+            --target-org UAT \
+            --source-dir force-app \
+            --test-level NoTestRun \
+            --wait 120
