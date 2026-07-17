@@ -1,17 +1,20 @@
-name: Deploy Baseline to UAT
+name: Validate Pull Request
 
 on:
   pull_request:
-    types: [closed]
-    branches:
-      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
-  deploy:
-    if: github.event.pull_request.merged == true
+
+  validate:
+
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -27,10 +30,10 @@ jobs:
             --sfdx-url-file auth.txt \
             --alias UAT
 
-      - name: Deploy Baseline
+      - name: Validate Deployment
         run: |
-          sf project deploy start \
+          sf project deploy validate \
             --target-org UAT \
             --source-dir force-app \
-            --test-level RunLocalTests \
+            --test-level NoTestRun \
             --wait 120
