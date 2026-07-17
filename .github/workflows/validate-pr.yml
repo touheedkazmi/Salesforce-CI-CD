@@ -35,5 +35,5 @@ jobs:
           sf project deploy validate \
             --target-org UAT \
             --source-dir force-app \
-            --test-level NoTestRun \
+            --test-level RunLocalTests \
             --wait 120
