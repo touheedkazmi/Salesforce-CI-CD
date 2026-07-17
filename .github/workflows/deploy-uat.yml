@@ -32,5 +32,6 @@ jobs:
           sf project deploy start \
             --target-org UAT \
             --source-dir force-app \
-            --test-level NoTestRun \
+            # --test-level NoTestRun \
+            --test-level RunLocalTests
             --wait 120
