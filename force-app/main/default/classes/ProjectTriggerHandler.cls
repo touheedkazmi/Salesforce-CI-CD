@@ -1,5 +1,7 @@
 public with sharing class ProjectTriggerHandler {
 
+    private static final Decimal COMPLETION_COMPLETE = 100;
+
     public static void beforeUpdate(
         List<Project__c> newProjects,
         Map<Id, Project__c> oldMap
@@ -9,10 +11,10 @@ public with sharing class ProjectTriggerHandler {
 
             Project__c oldProject = oldMap.get(project.Id);
 
-            // Only act when Completion changes to 100
             if (
-                project.Completion__c == 100 &&
-                oldProject.Completion__c != 100
+                project.Completion__c == COMPLETION_COMPLETE &&
+                oldProject.Completion__c != COMPLETION_COMPLETE &&
+                project.Status__c != 'Completed'
             ) {
                 project.Status__c = 'Completed';
             }

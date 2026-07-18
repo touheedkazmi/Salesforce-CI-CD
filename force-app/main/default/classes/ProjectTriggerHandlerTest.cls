@@ -6,7 +6,6 @@ private class ProjectTriggerHandlerTest {
 
         // Arrange
         Project__c project = new Project__c(
-            // Name = 'Test Project',
             Status__c = 'Development',
             Completion__c = 50
         );
@@ -17,6 +16,7 @@ private class ProjectTriggerHandlerTest {
         Test.startTest();
 
         project.Completion__c = 100;
+
         update project;
 
         Test.stopTest();
@@ -31,7 +31,7 @@ private class ProjectTriggerHandlerTest {
         System.assertEquals(
             100,
             updatedProject.Completion__c,
-            'Completion should be updated to 100.'
+            'Completion should be 100.'
         );
 
         System.assertEquals(
@@ -46,7 +46,6 @@ private class ProjectTriggerHandlerTest {
 
         // Arrange
         Project__c project = new Project__c(
-            // Name = 'Test Project',
             Status__c = 'Development',
             Completion__c = 50
         );
@@ -57,6 +56,7 @@ private class ProjectTriggerHandlerTest {
         Test.startTest();
 
         project.Completion__c = 75;
+
         update project;
 
         Test.stopTest();
@@ -70,14 +70,12 @@ private class ProjectTriggerHandlerTest {
 
         System.assertEquals(
             75,
-            updatedProject.Completion__c,
-            'Completion should be updated to 75.'
+            updatedProject.Completion__c
         );
 
         System.assertEquals(
             'Development',
-            updatedProject.Status__c,
-            'Status should remain unchanged when completion is less than 100.'
+            updatedProject.Status__c
         );
     }
 }
