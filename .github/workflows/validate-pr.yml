@@ -34,12 +34,17 @@ jobs:
             --sfdx-url-file auth.txt \
             --alias UAT
 
-      - name: Generate Delta Package
+      # - name: Generate Delta Package
+      #   run: |
+      #     sf sgd source delta \
+      #       --from origin/main \
+      #       --to HEAD \
+      #       --output-dir delta
+
+      - name: Show SGD Information
         run: |
-          sf sgd source delta \
-            --from origin/main \
-            --to HEAD \
-            --output-dir delta
+          sf plugins
+          sf sgd source delta --help
 
       - name: Validate Deployment
         run: |
