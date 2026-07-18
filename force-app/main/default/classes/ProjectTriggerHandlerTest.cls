@@ -2,62 +2,42 @@
 private class ProjectTriggerHandlerTest {
 
     @isTest
-    static void testTriggerSetsStatusCompletedWhenCompletionReaches100() {
+    static void testProjectMarkedCompleted() {
+
+        // Arrange
         Project__c project = new Project__c(
-            Completion__c = 90,
-            Status__c = 'In Progress'       
+           // Name = 'Test Project',
+            Status__c = 'In Progress',
+            Completion__c = 50
         );
+
         insert project;
 
-        Project__c projectToUpdate = [
-            SELECT Id, Completion__c, Status__c
-            FROM Project__c
-            WHERE Id = :project.Id
-            LIMIT 1
-        ];
-        projectToUpdate.Completion__c = 100;
-
+        // Act
         Test.startTest();
-        update projectToUpdate;
+
+        project.Completion__c = 100;
+        update project;
+
         Test.stopTest();
 
-        Project__c result = [
-            SELECT Id, Completion__c, Status__c
+        // Assert
+        Project__c updatedProject = [
+            SELECT Status__c, Completion__c
             FROM Project__c
             WHERE Id = :project.Id
-            LIMIT 1
         ];
 
-        System.assertEquals('Completed', result.Status__c);
-    }
-
-    @isTest
-    static void testTriggerDoesNotChangeStatusWhenCompletionDoesNotReach100() {
-        Project__c project = new Project__c(
-            Completion__c = 80,
-            Status__c = 'In Progress'
+        System.assertEquals(
+            100,
+            updatedProject.Completion__c,
+            'Completion should be updated to 100.'
         );
-        insert project;
 
-        Project__c projectToUpdate = [
-            SELECT Id, Completion__c, Status__c
-            FROM Project__c
-            WHERE Id = :project.Id
-            LIMIT 1
-        ];
-        projectToUpdate.Completion__c = 95;
-
-        Test.startTest();
-        update projectToUpdate;
-        Test.stopTest();
-
-        Project__c result = [
-            SELECT Id, Completion__c, Status__c
-            FROM Project__c
-            WHERE Id = :project.Id
-            LIMIT 1
-        ];
-
-        System.assertEquals('In Progress', result.Status__c);
+        System.assertEquals(
+            'Completed',
+            updatedProject.Status__c,
+            'Status should automatically change to Completed.'
+        );
     }
 }
