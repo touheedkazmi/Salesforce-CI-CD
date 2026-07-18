@@ -24,6 +24,8 @@ jobs:
           npm install -g @salesforce/cli
           echo y | sf plugins install sfdx-git-delta
           sf version
+          sf plugins
+          sf sgd source delta --help
 
       - name: Authenticate to UAT
         run: |
