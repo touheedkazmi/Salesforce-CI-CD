@@ -45,10 +45,31 @@ jobs:
             --generate-delta \
             --output-dir delta
 
+      - name: Show Generated Package
+        run: |
+          echo "===== package.xml ====="
+          cat delta/package/package.xml
+
+          echo ""
+          echo "===== destructiveChanges.xml ====="
+
+          if [ -f delta/destructiveChanges/destructiveChanges.xml ]; then
+            cat delta/destructiveChanges/destructiveChanges.xml
+          else
+            echo "No destructive changes."
+          fi
+      
       - name: Deploy Delta
         run: |
-          sf project deploy start \
-            --target-org UAT \
-            --manifest delta/package/package.xml \
-            --test-level RunRelevantTests \
-            --wait 120
+          if grep -q "<types>" delta/package/package.xml; then
+            echo "Salesforce metadata found. Starting deployment..."
+
+            sf project deploy start \
+              --target-org UAT \
+              --manifest delta/package/package.xml \
+              --test-level RunRelevantTests \
+              --wait 120
+          else
+            echo "No Salesforce metadata changes detected."
+            echo "Skipping deployment."
+          fi
