@@ -37,9 +37,12 @@ jobs:
 
       - name: Generate Delta Package
         run: |
+          mkdir -p delta
+
           sf sgd source delta \
-            --from HEAD~1 \
+            --from origin/main \
             --to HEAD \
+            --generate-delta \
             --output-dir delta
 
       - name: Deploy Delta
