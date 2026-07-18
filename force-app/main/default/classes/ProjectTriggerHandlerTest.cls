@@ -12,9 +12,12 @@ private class ProjectTriggerHandlerTest {
         insert project;
 
         Test.startTest();
+
+        project.Status__c = 'Planning';
         update project;
+
         Test.stopTest();
 
-        System.assert(true);
+        System.assertEquals('Planning', project.Status__c);
     }
 }
