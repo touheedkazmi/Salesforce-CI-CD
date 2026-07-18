@@ -1,23 +1,31 @@
-name: Deploy Baseline to UAT
+name: Deploy to UAT
 
 on:
   pull_request:
-    types: [closed]
     branches:
       - main
+    types:
+      - closed
 
 jobs:
+
   deploy:
+
     if: github.event.pull_request.merged == true
+
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Salesforce CLI
         run: |
           npm install -g @salesforce/cli
+          echo y | sf plugins install sfdx-git-delta
           sf version
 
       - name: Authenticate to UAT
@@ -27,10 +35,41 @@ jobs:
             --sfdx-url-file auth.txt \
             --alias UAT
 
-      - name: Deploy Baseline
+      - name: Generate Delta Package
         run: |
-          sf project deploy start \
-            --target-org UAT \
-            --source-dir force-app \
-            --test-level RunLocalTests \
-            --wait 120
+          mkdir -p delta
+
+          sf sgd source delta \
+            --from origin/main \
+            --to HEAD \
+            --generate-delta \
+            --output-dir delta
+
+      - name: Show Generated Package
+        run: |
+          echo "===== package.xml ====="
+          cat delta/package/package.xml
+
+          echo ""
+          echo "===== destructiveChanges.xml ====="
+
+          if [ -f delta/destructiveChanges/destructiveChanges.xml ]; then
+            cat delta/destructiveChanges/destructiveChanges.xml
+          else
+            echo "No destructive changes."
+          fi
+      
+      - name: Deploy Delta
+        run: |
+          if grep -q "<types>" delta/package/package.xml; then
+            echo "Salesforce metadata found. Starting deployment..."
+
+            sf project deploy start \
+              --target-org UAT \
+              --manifest delta/package/package.xml \
+              --test-level RunRelevantTests \
+              --wait 120
+          else
+            echo "No Salesforce metadata changes detected."
+            echo "Skipping deployment."
+          fi

@@ -8,7 +8,6 @@ on:
       - reopened
 
 jobs:
-
   validate:
 
     runs-on: ubuntu-latest
@@ -17,11 +16,16 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Salesforce CLI
         run: |
           npm install -g @salesforce/cli
+          echo y | sf plugins install sfdx-git-delta
           sf version
+          sf plugins
+          sf sgd source delta --help
 
       - name: Authenticate to UAT
         run: |
@@ -30,10 +34,46 @@ jobs:
             --sfdx-url-file auth.txt \
             --alias UAT
 
+      - name: Generate Delta Package
+        run: |
+          mkdir -p delta
+
+          sf sgd source delta \
+            --from origin/main \
+            --to HEAD \
+            --generate-delta \
+            --output-dir delta
+
+      - name: Show Generated Package
+        run: |
+          echo "===== package.xml ====="
+          cat delta/package/package.xml
+
+          echo ""
+          echo "===== destructiveChanges.xml ====="
+
+          if [ -f delta/destructiveChanges/destructiveChanges.xml ]; then
+            cat delta/destructiveChanges/destructiveChanges.xml
+          else
+            echo "No destructive changes."
+          fi
+
+      - name: Show SGD Information
+        run: |
+          sf plugins
+          sf sgd source delta --help
+
       - name: Validate Deployment
         run: |
-          sf project deploy validate \
-            --target-org UAT \
-            --source-dir force-app \
-            --test-level RunLocalTests \
-            --wait 120
+          if grep -q "<types>" delta/package/package.xml; then
+            echo "Salesforce metadata found. Starting validation..."
+
+            sf project deploy validate \
+              --target-org UAT \
+              --manifest delta/package/package.xml \
+              --test-level RunRelevantTests \
+              --wait 120
+          else
+            echo "No Salesforce metadata changes detected."
+            echo "Skipping validation."
+          fi
