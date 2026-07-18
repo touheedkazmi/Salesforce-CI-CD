@@ -2,66 +2,62 @@
 private class ProjectTriggerHandlerTest {
 
     @isTest
-    static void testBeforeUpdateSetsStatusCompletedWhenCompletionReaches100() {
+    static void testTriggerSetsStatusCompletedWhenCompletionReaches100() {
         Project__c project = new Project__c(
             Completion__c = 90,
-            Status__c = 'In Progress'
+            Status__c = 'In Progress'       
         );
         insert project;
 
-        Project__c updatedProject = new Project__c(
-            Id = project.Id,
-            Completion__c = 100,
-            Status__c = 'In Progress'
-        );
-
-        Map<Id, Project__c> oldMap = new Map<Id, Project__c>{
-            project.Id => new Project__c(
-                Id = project.Id,
-                Completion__c = 90,
-                Status__c = 'In Progress'
-            )
-        };
+        Project__c projectToUpdate = [
+            SELECT Id, Completion__c, Status__c
+            FROM Project__c
+            WHERE Id = :project.Id
+            LIMIT 1
+        ];
+        projectToUpdate.Completion__c = 100;
 
         Test.startTest();
-        ProjectTriggerHandler.beforeUpdate(
-            new List<Project__c>{ updatedProject },
-            oldMap
-        );
+        update projectToUpdate;
         Test.stopTest();
 
-        System.assertEquals('Completed', updatedProject.Status__c);
+        Project__c result = [
+            SELECT Id, Completion__c, Status__c
+            FROM Project__c
+            WHERE Id = :project.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('Completed', result.Status__c);
     }
 
     @isTest
-    static void testBeforeUpdateDoesNotChangeStatusWhenCompletionDoesNotReach100() {
+    static void testTriggerDoesNotChangeStatusWhenCompletionDoesNotReach100() {
         Project__c project = new Project__c(
             Completion__c = 80,
             Status__c = 'In Progress'
         );
         insert project;
 
-        Project__c updatedProject = new Project__c(
-            Id = project.Id,
-            Completion__c = 95,
-            Status__c = 'In Progress'
-        );
-
-        Map<Id, Project__c> oldMap = new Map<Id, Project__c>{
-            project.Id => new Project__c(
-                Id = project.Id,
-                Completion__c = 80,
-                Status__c = 'In Progress'
-            )
-        };
+        Project__c projectToUpdate = [
+            SELECT Id, Completion__c, Status__c
+            FROM Project__c
+            WHERE Id = :project.Id
+            LIMIT 1
+        ];
+        projectToUpdate.Completion__c = 95;
 
         Test.startTest();
-        ProjectTriggerHandler.beforeUpdate(
-            new List<Project__c>{ updatedProject },
-            oldMap
-        );
+        update projectToUpdate;
         Test.stopTest();
 
-        System.assertEquals('In Progress', updatedProject.Status__c);
+        Project__c result = [
+            SELECT Id, Completion__c, Status__c
+            FROM Project__c
+            WHERE Id = :project.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('In Progress', result.Status__c);
     }
 }
