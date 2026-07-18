@@ -4,7 +4,6 @@ private class ProjectTriggerHandlerTest {
     @isTest
     static void testBeforeUpdateSetsStatusCompletedWhenCompletionReaches100() {
         Project__c project = new Project__c(
-            Name = 'Test Project',
             Completion__c = 90,
             Status__c = 'In Progress'
         );
@@ -37,7 +36,6 @@ private class ProjectTriggerHandlerTest {
     @isTest
     static void testBeforeUpdateDoesNotChangeStatusWhenCompletionDoesNotReach100() {
         Project__c project = new Project__c(
-            Name = 'Test Project',
             Completion__c = 80,
             Status__c = 'In Progress'
         );
