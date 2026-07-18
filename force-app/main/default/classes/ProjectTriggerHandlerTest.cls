@@ -6,7 +6,7 @@ private class ProjectTriggerHandlerTest {
 
         // Arrange
         Project__c project = new Project__c(
-            Name = 'Test Project',
+            // Name = 'Test Project',
             Status__c = 'Development',
             Completion__c = 50
         );
@@ -46,7 +46,7 @@ private class ProjectTriggerHandlerTest {
 
         // Arrange
         Project__c project = new Project__c(
-            Name = 'Test Project',
+            // Name = 'Test Project',
             Status__c = 'Development',
             Completion__c = 50
         );
