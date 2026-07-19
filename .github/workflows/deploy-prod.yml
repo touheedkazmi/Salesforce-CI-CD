@@ -1,0 +1,61 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install -g @salesforce/cli
+          echo y | sf plugins install sfdx-git-delta
+          sf version
+
+      - name: Authenticate to Production
+        run: |
+          echo "${{ secrets.PROD_SFDX_AUTH_URL }}" > auth.txt
+
+          sf org login sfdx-url \
+            --sfdx-url-file auth.txt \
+            --alias PROD
+
+      - name: Generate Delta Package
+        run: |
+          mkdir -p delta
+
+          sf sgd source delta \
+            --from HEAD~1 \
+            --to HEAD \
+            --generate-delta \
+            --output-dir delta
+
+      - name: Show Generated Package
+        run: |
+          echo "===== package.xml ====="
+          cat delta/package/package.xml
+
+      - name: Deploy to Production
+        run: |
+          if grep -q "<types>" delta/package/package.xml; then
+            echo "Salesforce metadata found. Starting deployment..."
+
+            sf project deploy start \
+              --target-org PROD \
+              --manifest delta/package/package.xml \
+              --test-level RunRelevantTests \
+              --wait 120
+
+          else
+            echo "No Salesforce metadata changes detected."
+            echo "Skipping deployment."
+          fi
