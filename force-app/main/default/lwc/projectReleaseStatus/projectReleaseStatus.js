@@ -3,6 +3,6 @@ import { LightningElement } from 'lwc';
 export default class ProjectReleaseStatus extends LightningElement {
 
     get releaseMessage() {
-        return 'Release approved by QA';
+        return 'Release approved by QA and Business';
     }
 }
