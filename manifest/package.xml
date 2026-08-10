@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+    <types>
+        <members>Project__c.Release_Status__c</members>
+        <name>CustomField</name>
+    </types>
+
+    <types>
+        <members>projectReleaseStatus</members>
+        <name>LightningComponentBundle</name>
+    </types>
+
+    <version>67.0</version>
+
+</Package>
+
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>AccountController</members>
         <members>ChangePasswordController</members>
@@ -159,3 +177,4 @@
     </types>
     <version>67.0</version>
 </Package>
+-->
